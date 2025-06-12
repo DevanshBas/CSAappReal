@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BillSelector from './BillSelector';
 import RemixBoard from './RemixBoard';
-import ImpactPanel from './ImpactPanel';
+// import ImpactPanel from './ImpactPanel'; // Commented out as it's not used in the provided JSX
 import { Button } from '../ui/Button';
 import { Undo2, Redo2, Save, Send } from 'lucide-react';
 import BillCard from './BillCard'; // Assuming you'll use BillCard for BillSelector
@@ -14,12 +14,11 @@ const RemixStudio = () => {
   const [remixSchema, setRemixSchema] = useState(null);
   const [templates, setRemixTemplates] = useState([]);
 
-
   useEffect(() => {
     // Load saved draft from localStorage or IndexedDB
     const savedRemix = localStorage.getItem('civicmix_remix_draft');
     if (savedRemix && JSON.parse(savedRemix).length > 0) { // Check if saved data is not empty
-      setRemixData(JSON.parse(savedRemix)); 
+      setRemixData(JSON.parse(savedRemix));
       setHistory([JSON.parse(savedRemix)]);
     }
   }, []);
@@ -53,8 +52,6 @@ const RemixStudio = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-
   // Placeholder handler functions for now
   const handleBillSelect = (bill) => {
     setCurrentBill(bill);
@@ -77,7 +74,7 @@ const RemixStudio = () => {
     // Logic to save remix - Placeholder
     console.log("Saving remix:", remixData);
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
- setIsSaving(false);
+    setIsSaving(false);
     alert("Remix saved!"); // Placeholder feedback
   };
 
@@ -89,13 +86,13 @@ const RemixStudio = () => {
     setIsSubmitting(true);
     // Logic to submit remix - Placeholder
     console.log("Submitting remix:", remixData);
- await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
     setIsSubmitting(false);
     alert("Remix submitted!"); // Placeholder feedback
     // localStorage.removeItem('civicmix_remix_draft'); // Clear draft after submission - Placeholder
   };
 
- const handleUndo = () => {
+  const handleUndo = () => {
     // Placeholder for undo logic
     console.log("Undo action triggered.");
   };
@@ -104,8 +101,8 @@ const RemixStudio = () => {
     // Placeholder for redo logic
     if (historyIndex < history.length - 1) {
       const nextRemixData = history[historyIndex + 1];
- setRemixData(nextRemixData);
- setHistoryIndex(historyIndex + 1);
+      setRemixData(nextRemixData);
+      setHistoryIndex(historyIndex + 1);
       console.log("Redoing action. New history index:", historyIndex + 1);
     } else {
       console.log("Cannot redo further.");
@@ -153,34 +150,33 @@ const RemixStudio = () => {
               >
                 <Redo2 className="h-5 w-5" />
               </Button>
-               <Button
+              <Button
                 className="bg-gradient-to-r from-blue-500 to-green-400 text-white rounded-xl px-6 py-3 hover:from-blue-600 hover:to-green-500 active:scale-95 transition"
                 onClick={handleSave}
                 disabled={isSaving}
               >
                 <Save className="mr-2 h-4 w-4" /> {isSaving ? 'Saving...' : 'Save Draft'}
               </Button>
-               <Button
+              <Button
                 className="bg-gradient-to-r from-blue-500 to-green-400 text-white rounded-xl px-6 py-3 hover:from-blue-600 hover:to-green-500 active:scale-95 transition"
                 onClick={handleSubmit}
                 disabled={isSubmitting || !remixData || remixData.length === 0}
               >
-                 <Send className="mr-2 h-4 w-4" /> {isSubmitting ? 'Submitting...' : 'Submit Remix'}
+                <Send className="mr-2 h-4 w-4" /> {isSubmitting ? 'Submitting...' : 'Submit Remix'}
               </Button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2">
-              <RemixBoard
-                originalBill={currentBill}
-                remixData={remixData}
-                onRemixChange={handleRemixChange}
-              />
-            </div>
-            <div>
-              <ImpactPanel remixData={remixData} />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-6">
+            <RemixBoard
+              originalBill={currentBill}
+              remixData={remixData}
+              onRemixChange={handleRemixChange}
+            />
+          </div>
+
+          <div>
+            {/* <ImpactPanel remixData={remixData} /> */} {/* Placeholder for Impact Panel */}
           </div>
         </>
       )}

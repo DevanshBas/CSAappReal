@@ -129,13 +129,15 @@ const LeaderHub = ({ userId }) => { // Added userId prop for potential future us
         </div>
 
         {/* Leaderboard Table Placeholder */}
-        <div className="mt-6">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-6">
           {loading && <p>Loading leaderboard...</p>}
           {error && <p className="text-red-500">Error: {error.message}</p>}
           {!loading && !error && leaderboardData.length === 0 && (
             <p>No leaderboard data available for the selected criteria.</p>
           )}
           {!loading && !error && leaderboardData.length > 0 && (
+            // Wrap the table in a div with flexbox for alignment
+            <div className="flex justify-center">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-800">
@@ -193,6 +195,7 @@ const LeaderHub = ({ userId }) => { // Added userId prop for potential future us
                   ))}
                 </tbody>
               </table>
+            </div>
             </div>
           )}
         </div>
