@@ -1,104 +1,214 @@
 "use client";
-import '../styles/globals.css'; // Import global styles
-import Link from 'next/link'; // Import Link for navigation
-import { useState } from 'react';
-import { usePathname } from 'next/navigation'; // Import usePathname to get current path
+import '../styles/globals.css';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function RootLayout({ children }) {
-  // Consider using useRouter to determine the active link based on pathname
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to manage sidebar visibility on mobile
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to manage logged-in/logged-out status
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [theme, setTheme] = useState('dark');
+  const pathname = usePathname();
+
+  // Close sidebar when route changes
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [pathname]);
+
+  // Theme toggle function
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  // Navigation items
+  const navItems = [
+    { href: '/', label: 'Home', icon: '🏠' },
+    { href: '/bills', label: 'Bills', icon: '📋' },
+    { href: '/battles', label: 'Battles', icon: '⚔️' },
+    { href: '/squads', label: 'Squads', icon: '👥' },
+    { href: '/profile', label: 'Profile', icon: '👤' },
+    { href: '/settings', label: 'Settings', icon: '⚙️' }
+  ];
+
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
-        {/* Add necessary head elements here, like title, meta tags, etc. */}
         <title>CivicMix</title>
         <meta name="description" content="Civic engagement made fun." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body>
-        <header className="p-4 bg-gray-800 text-white flex justify-between items-center"> {/* Added some basic styling for visibility */}
-          <div className="flex items-center"> {/* Container for Logo */}
-            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">CivicMix</span>
-          </div>
-          <div className="flex items-center space-x-4"> {/* Container for User Auth and Settings, added spacing */}
-            {/* Conditional rendering for logged-in/logged-out state */}
-            {isLoggedIn ? (
-              /* Logged-in state placeholder */
-              <div className="flex items-center space-x-2"> {/* Container for Avatar and Display Name */}
-                <div className="w-12 h-12 rounded-full bg-gray-400"></div> {/* Avatar Placeholder */}
-                <span>Display Name</span> {/* Display Name Placeholder */}
-              </div>
-            ) : (
-              /* Logged-out state placeholder */
-              <div>
-                <button className="px-4 py-2 rounded-md bg-accent text-white flex items-center space-x-1">
-                  <span>[Icon]</span> {/* LogIn Icon Placeholder */}
-                  <span>Login</span>
+      <body className="custom-scrollbar">
+        {/* Header */}
+        <header className="sticky top-0 z-50 backdrop-filter backdrop-blur-lg bg-opacity-80 border-b border-gray-200 dark:border-gray-700">
+          <div className="card mx-4 my-2 flex justify-between items-center">
+            <div className="flex items-center space-x-4">
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="btn-icon md:hidden"
+                aria-label="Toggle navigation"
+              >
+                <span className="text-xl">
+                  {isSidebarOpen ? '✕' : '☰'}
+                </span>
+              </button>
+              
+              {/* Logo */}
+              <Link href="/" className="flex items-center space-x-2">
+                <span className="text-2xl font-bold text-gradient">CivicMix</span>
+              </Link>
+            </div>
+
+            {/* Header actions */}
+            <div className="flex items-center space-x-3">
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                className="btn-icon"
+                aria-label="Toggle theme"
+              >
+                <span className="text-lg">
+                  {theme === 'dark' ? '☀️' : '🌙'}
+                </span>
+              </button>
+
+              {/* User section */}
+              {isLoggedIn ? (
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-green-400 flex items-center justify-center text-white text-sm font-bold">
+                      U
+                    </div>
+                    <span className="hidden sm:block font-medium">User Name</span>
+                  </div>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setIsLoggedIn(true)}
+                  className="btn-primary text-sm"
+                >
+                  <span className="mr-1">🔐</span>
+                  Login
                 </button>
-              </div>
-            )}
-            {/* Settings Icon Placeholder with hover animation */}
-            {/* You'll need to add state/logic here later for the slide-out drawer */}
-            <span className="transition hover:rotate-3 hover:scale-105">[Settings Icon]</span>
+              )}
+            </div>
           </div>
         </header>
 
-        {/* Main Content Area with Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 px-4 py-6">
-          {/* Navigation Sidebar - Responsive */}
-          <div className="col-span-1 relative"> {/* Container for sidebar and mobile toggle */}
-            {/* Mobile Toggle */}
-            <button
-              className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              aria-label="Toggle navigation"
-            >
-              {isSidebarOpen ? '[Close Icon]' : '[Hamburger Icon]'} {/* Toggle Icon based on state */}
-            </button>
+        {/* Main layout */}
+        <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+          {/* Sidebar overlay for mobile */}
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
 
-            {/* Navigation Sidebar */}
-            {/* Apply conditional classes for mobile slide-in/out */}
-            {/* Added conditional positioning and visibility classes */}
-            <nav className={`fixed inset-y-0 left-0 w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:bg-transparent md:z-auto ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} flex flex-col space-y-4 p-4 md:p-0 md:flex-row md:space-x-4 md:space-y-0 md:flex-col md:space-y-4`}>
-              {/* Apply conditional classes for active link and hover transition */}
-              <Link href="/" onClick={() => setIsSidebarOpen(false)} className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${usePathname() === '/' ? 'bg-blue-600 font-bold text-white' : 'hover:bg-gray-200'}`} aria-label="Link to Home">Home</Link>
-              <Link href="/bills" onClick={() => setIsSidebarOpen(false)} className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${usePathname() === '/bills' ? 'bg-blue-600 font-bold text-white' : 'hover:bg-gray-200'}`} aria-label="Link to Bills">Bills</Link>
-              <Link href="/battles" onClick={() => setIsSidebarOpen(false)} className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${usePathname() === '/battles' ? 'bg-blue-600 font-bold text-white' : 'hover:bg-gray-200'}`} aria-label="Link to Battles">Battles</Link>
-              <Link href="/squads" onClick={() => setIsSidebarOpen(false)} className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${usePathname() === '/squads' ? 'bg-blue-600 font-bold text-white' : 'hover:bg-gray-200'}`} aria-label="Link to Squads">Squads</Link>
-              <Link href="/profile" onClick={() => setIsSidebarOpen(false)} className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${usePathname() === '/profile' ? 'bg-blue-600 font-bold text-white' : 'hover:bg-gray-200'}`} aria-label="Link to Profile">Profile</Link>
-              <Link href="/settings" onClick={() => setIsSidebarOpen(false)} className={`p-3 rounded-lg text-gray-700 transition-colors duration-200 ${usePathname() === '/settings' ? 'bg-blue-600 font-bold text-white' : 'hover:bg-gray-200'}`} aria-label="Link to Settings">Settings</Link>
+          {/* Sidebar */}
+          <aside className={`
+            fixed md:sticky top-0 left-0 z-50 md:z-0
+            w-64 h-screen md:h-auto
+            transform transition-transform duration-300 ease-in-out
+            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+            bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
+            flex flex-col
+          `}>
+            {/* Mobile header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 md:hidden">
+              <span className="font-bold text-gradient">Navigation</span>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="btn-icon"
+              >
+                <span className="text-lg">✕</span>
+              </button>
+            </div>
+
+            {/* Navigation */}
+            <nav className="flex-1 p-4">
+              <ul className="space-y-2">
+                {navItems.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`nav-link flex items-center space-x-3 w-full ${
+                        pathname === item.href ? 'active' : ''
+                      }`}
+                      onClick={() => setIsSidebarOpen(false)}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="font-medium">{item.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </nav>
 
-            {/* Mobile Sidebar Overlay (Hidden by default) */}
-            {/* You'll need to implement the logic to show/hide this overlay */}
-            {isSidebarOpen && (
-              <div
-                className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-                onClick={() => setIsSidebarOpen(false)}
-              ></div>
-            )}
-             {/* Mobile Sidebar (Hidden by default) */}
-             {/* You'll need to implement the logic and animation for this sidebar */}
-             {/* Removed the redundant mobile sidebar div */}
-          </div>
+            {/* Sidebar footer */}
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                © 2025 CivicMix
+              </div>
+            </div>
+          </aside>
 
-          {/* Main Content */}
-          <main className="col-span-1 md:col-span-3 p-6 bg-gray-50 max-w-7xl mx-auto overflow-y-auto mt-4 font-sans text-gray-800">{children}</main>
+          {/* Main content */}
+          <main className="flex-1 flex flex-col min-h-screen">
+            {/* Content area */}
+            <div className="flex-1 p-4 md:p-6 max-w-7xl mx-auto w-full">
+              <div className="animate-fade-in">
+                {children}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <footer className="mt-auto bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+              <div className="max-w-7xl mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {/* Company info */}
+                  <div>
+                    <h3 className="font-bold text-lg mb-3 text-gradient">CivicMix</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Making civic engagement fun and accessible for everyone.
+                    </p>
+                  </div>
+
+                  {/* Quick links */}
+                  <div>
+                    <h4 className="font-semibold mb-3">Quick Links</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li><Link href="/about" className="text-gray-600 dark:text-gray-400 hover:text-blue-500">About</Link></li>
+                      <li><Link href="/help" className="text-gray-600 dark:text-gray-400 hover:text-blue-500">Help Center</Link></li>
+                      <li><Link href="/contact" className="text-gray-600 dark:text-gray-400 hover:text-blue-500">Contact</Link></li>
+                    </ul>
+                  </div>
+
+                  {/* Legal */}
+                  <div>
+                    <h4 className="font-semibold mb-3">Legal</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li><Link href="/privacy" className="text-gray-600 dark:text-gray-400 hover:text-blue-500">Privacy Policy</Link></li>
+                      <li><Link href="/terms" className="text-gray-600 dark:text-gray-400 hover:text-blue-500">Terms of Service</Link></li>
+                      <li><Link href="/cookies" className="text-gray-600 dark:text-gray-400 hover:text-blue-500">Cookie Policy</Link></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                  © 2025 CivicMix. All rights reserved.
+                </div>
+              </div>
+            </footer>
+          </main>
         </div>
-        
-        {/* Footer */}
-        <footer className="w-full bg-gray-900 text-white py-4 text-center h-12">
- <div className="container mx-auto px-4">
- <div className="flex flex-col md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-6 text-sm mb-2">
- <Link href="#" className="text-gray-400 hover:underline">About</Link>
- <Link href="#" className="text-gray-400 hover:underline">Privacy Policy</Link>
- <Link href="#" className="text-gray-400 hover:underline">Terms of Service</Link>
- </div>
-          © 2025 CivicMix. All rights reserved.
- </div>
-        </footer>
 
-        {/* Placeholder for ModalsContainer */}
+        {/* Toast notifications container */}
+        <div id="toast-container" className="fixed top-4 right-4 z-50 space-y-2">
+          {/* Toast notifications will be rendered here */}
+        </div>
       </body>
     </html>
   );
