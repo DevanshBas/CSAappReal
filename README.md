@@ -18,8 +18,3 @@ CivicMix is a dynamic platform designed to foster civic engagement and understan
 * **Backend:** Node.js, Express.js (or similar)
 * **Database:** (Specify your database, e.g., PostgreSQL, MongoDB)
 * **API:** RESTful API
-
-## Setup Instructions
-
-1. **Clone the repository:**
-
