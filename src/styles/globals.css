@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 /* Import Poppins font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Poppins:wght@400;600;700&display=swap');
 
 :root {
   --background: #101112;
@@ -29,10 +30,16 @@
 
 @layer base {
   /* Typography settings with Poppins font */
+  /* Consider making Inter the primary font or defining a clear typography scale */
   html {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif; /* Using Inter as primary for now based on homepage code */
   }
   h1 {
+    /* Integrated from homepage styles */
+    font-weight: 900;
+    font-size: 2.25rem; /* 36px */
+    background: linear-gradient(90deg, #6366f1, #06b6d4);
+    -webkit-background-clip: text;
     font-weight: 600; /* Semi-bold weight */
     font-size: 36px;
   }
@@ -46,16 +53,36 @@
     font-size: 16px;
   }
   small {
+    /* Integrated from homepage styles for paragraphs */
+    font-weight: 500;
+    font-size: 1.125rem; /* 18px */
+    color: #374151; /* gray-700 */
     font-size: 14px;
+  }
+
+  /* Responsive h1 font size from homepage media query */
+  @media (min-width: 640px) {
+    h1 {
+      font-size: 3rem; /* 48px */
+    }
   }
 }
 @layer base {
-  button { @apply rounded-xl; }
+  /* Keep existing button styling for general buttons if needed, or rely solely on components */
+  /* button { @apply rounded-xl; } */
 }
 /* Add any custom components or utilities here */
 
 /* Add any custom components or utilities here */
 @layer components {
+  /* Hero section styles integrated as a component utility */
+  .hero {
+    @apply bg-gray-50 max-w-3xl mx-auto my-12 py-16 px-6 rounded-2xl shadow-lg text-center flex flex-col items-center text-gray-800;
+     /* Specific styles not easily covered by Tailwind */
+    line-height: 1.5;
+    user-select: none;
+  }
+
   .btn-primary {
     @apply bg-gradient-to-r from-blue-500 to-green-400 text-white rounded-xl px-6 py-3 hover:from-blue-600 hover:to-green-500 active:scale-95 transition;
   }
