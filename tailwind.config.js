@@ -30,18 +30,36 @@ module.exports = {
         '16': '16px',
         '24': '24px',
         '32': '32px',
+      },      colors: {
+        background: 'var(--background)',
+        card: 'var(--card)',
+        'card-hover': 'var(--card-hover)',
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'accent-blue': 'var(--accent-blue)',
+        'accent-green': 'var(--accent-green)',
+        border: 'var(--border)',
+        muted: 'var(--muted)',
+        error: 'var(--error-red)',
+        success: 'var(--success)',
+        warning: 'var(--warning)',
       },
-      colors: {
-        // Define your global colors here, mapping to CSS variables
-        // Example:
-        // 'background': 'var(--background)',
-        // 'card': 'var(--card)',
-        // 'text-primary': 'var(--text-primary)',
-        // 'text-secondary': 'var(--text-secondary)',
-        // 'accent': 'var(--accent)',
-        // 'muted': 'hsl(var(--muted))', // Example for HSL color
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'spin-slow': 'spin 3s linear infinite',
+      },
+      backdropBlur: {
+        xs: '2px',
+        sm: '4px',
+        md: '8px',
+        lg: '16px',
+        xl: '24px',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }

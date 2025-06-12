@@ -26,15 +26,56 @@ export default function RootLayout({ children }) {
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
   };
-
-  // Navigation items
+  // Navigation items with descriptions
   const navItems = [
-    { href: '/', label: 'Home', icon: '🏠' },
-    { href: '/bills', label: 'Bills', icon: '📋' },
-    { href: '/battles', label: 'Battles', icon: '⚔️' },
-    { href: '/squads', label: 'Squads', icon: '👥' },
-    { href: '/profile', label: 'Profile', icon: '👤' },
-    { href: '/settings', label: 'Settings', icon: '⚙️' }
+    { 
+      href: '/', 
+      label: 'Home', 
+      icon: '🏠',
+      description: 'Your dashboard and activity feed'
+    },
+    { 
+      href: '/bills', 
+      label: 'Bills', 
+      icon: '📋',
+      description: 'Explore and interact with legislation'
+    },
+    { 
+      href: '/remix', 
+      label: 'Remix Studio', 
+      icon: '🎨',
+      description: 'Create and share bill remixes'
+    },
+    { 
+      href: '/battles', 
+      label: 'Battles', 
+      icon: '⚔️',
+      description: 'Participate in bill battles'
+    },
+    { 
+      href: '/squads', 
+      label: 'Squads', 
+      icon: '👥',
+      description: 'Join and manage your squads'
+    },
+    { 
+      href: '/leaderboard', 
+      label: 'Leaderboard', 
+      icon: '🏆',
+      description: 'See top performers and rankings'
+    },
+    { 
+      href: '/profile', 
+      label: 'Profile', 
+      icon: '👤',
+      description: 'Your personal profile and stats'
+    },
+    { 
+      href: '/settings', 
+      label: 'Settings', 
+      icon: '⚙️',
+      description: 'Customize your experience'
+    }
   ];
 
   return (
@@ -43,10 +84,46 @@ export default function RootLayout({ children }) {
         <title>CivicMix</title>
         <meta name="description" content="Civic engagement made fun." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <body className="min-h-screen bg-background text-text-primary">
-        {/* Header */}
-        <header className="sticky top-0 z-50 glass-effect border-b" style={{ borderColor: 'var(--border)' }}>
+      </head>      <body className="min-h-screen bg-background text-text-primary">
+        {/* Sidebar - Desktop */}
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="h-full glass-effect border-r" style={{ borderColor: 'var(--border)' }}>
+            {/* Sidebar header */}
+            <div className="p-4">
+              <Link href="/" className="flex items-center space-x-2 group">
+                <div className="w-10 h-10 bg-gradient-to-r from-accent-blue to-accent-green rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <span className="text-white font-bold text-lg">C</span>
+                </div>
+                <span className="text-xl font-bold text-gradient">CivicMix</span>
+              </Link>
+            </div>
+
+            {/* Navigation */}
+            <nav className="mt-4 px-2">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`group relative flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg transition-all duration-200 
+                      ${isActive ? 'bg-card text-accent-blue' : 'hover:bg-card hover:text-text-primary'}`}
+                  >
+                    <span className="text-xl">{item.icon}</span>
+                    <span className="font-medium">{item.label}</span>
+                    {/* Tooltip */}
+                    <div className="absolute left-full ml-2 px-3 py-1 bg-card rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 text-sm whitespace-nowrap z-50">
+                      {item.description}
+                    </div>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </aside>
+
+        {/* Header - Mobile */}
+        <header className="sticky top-0 z-40 lg:pl-64 glass-effect border-b" style={{ borderColor: 'var(--border)' }}>
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center space-x-4">
@@ -117,123 +194,60 @@ export default function RootLayout({ children }) {
           </div>
         </header>
 
-        {/* Main layout */}
-        <div className="flex min-h-screen">
-          {/* Sidebar overlay for mobile */}
-          {isSidebarOpen && (
-            <div
-              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-          )}
-
-          {/* Sidebar */}
-          <aside className={`
-            fixed lg:sticky top-0 left-0 z-50 lg:z-0
-            w-72 h-screen
-            transform transition-transform duration-300 ease-in-out
-            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-            glass-effect border-r flex flex-col
-          `} style={{ borderColor: 'var(--border)' }}>
-            {/* Sidebar header */}
-            <div className="p-6 border-b" style={{ borderColor: 'var(--border)' }}>
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gradient">Navigation</h2>
-                <button
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="lg:hidden p-1 rounded-lg hover:bg-white/10"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            {/* Navigation */}
-            <nav className="flex-1 p-6">
-              <ul className="space-y-2">
-                {navItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={`nav-link flex items-center space-x-3 w-full p-3 rounded-xl transition-all ${
-                        pathname === item.href 
-                          ? 'bg-gradient-to-r from-blue-500/20 to-green-400/20 text-blue-400 border border-blue-500/30' 
-                          : 'hover:bg-white/5'
-                      }`}
-                      onClick={() => setIsSidebarOpen(false)}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="font-medium">{item.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+        {/* Main content */}
+        <main className="lg:pl-64 min-h-[calc(100vh-4rem)]">
+          <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
+            {/* Breadcrumb navigation */}
+            <nav className="mb-6">
+              <ol className="flex items-center space-x-2 text-sm">
+                {pathname.split('/').map((segment, index, array) => {
+                  if (!segment) return null;
+                  const path = '/' + array.slice(1, index + 1).join('/');
+                  const navItem = navItems.find(item => item.href === path);
+                  const label = navItem ? navItem.label : segment;
+                  
+                  return (
+                    <li key={path} className="flex items-center">
+                      {index > 0 && (
+                        <span className="mx-2 text-text-secondary">/</span>
+                      )}
+                      <Link 
+                        href={path}
+                        className={`hover:text-accent-blue transition-colors ${
+                          index === array.length - 1 ? 'text-text-primary font-medium' : 'text-text-secondary'
+                        }`}
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
             </nav>
 
-            {/* Sidebar footer */}
-            <div className="p-6 border-t" style={{ borderColor: 'var(--border)' }}>
-              <div className="text-xs text-gray-500 text-center">
-                © 2025 CivicMix
-              </div>
-            </div>
-          </aside>
-
-          {/* Main content */}
-          <main className="flex-1 flex flex-col min-h-screen">
-            {/* Content area */}
-            <div className="flex-1 p-6 lg:p-12 max-w-7xl mx-auto w-full">
-              <div className="animate-fade-in">
-                {children}
-              </div>
+            {/* Page title */}
+            <div className="mb-8">
+              {pathname !== '/' && (
+                <h1 className="text-3xl font-bold">
+                  {navItems.find(item => item.href === pathname)?.label || 'Page'}
+                </h1>
+              )}
             </div>
 
-            {/* Footer */}
-            <footer className="mt-auto border-t" style={{ borderColor: 'var(--border)' }}>
-              <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  {/* Company info */}
-                  <div>
-                    <div className="flex items-center space-x-2 mb-4">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-400 rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">C</span>
-                      </div>
-                      <h3 className="font-bold text-xl text-gradient">CivicMix</h3>
-                    </div>
-                    <p className="text-gray-400 leading-relaxed">
-                      Making civic engagement fun and accessible for everyone.
-                    </p>
-                  </div>
+            {/* Page content */}
+            <div className="fade-in">
+              {children}
+            </div>
+          </div>
+        </main>
 
-                  {/* Quick links */}
-                  <div>
-                    <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
-                    <ul className="space-y-3">
-                      <li><Link href="/about" className="text-gray-400 hover:text-blue-400 transition-colors">About</Link></li>
-                      <li><Link href="/help" className="text-gray-400 hover:text-blue-400 transition-colors">Help Center</Link></li>
-                      <li><Link href="/contact" className="text-gray-400 hover:text-blue-400 transition-colors">Contact</Link></li>
-                    </ul>
-                  </div>
-
-                  {/* Legal */}
-                  <div>
-                    <h4 className="font-semibold text-lg mb-4">Legal</h4>
-                    <ul className="space-y-3">
-                      <li><Link href="/privacy" className="text-gray-400 hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-                      <li><Link href="/terms" className="text-gray-400 hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                      <li><Link href="/cookies" className="text-gray-400 hover:text-blue-400 transition-colors">Cookie Policy</Link></li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="border-t mt-12 pt-8 text-center text-gray-400" style={{ borderColor: 'var(--border)' }}>
-                  © 2025 CivicMix. All rights reserved.
-                </div>
-              </div>
-            </footer>
-          </main>
-        </div>
+        {/* Mobile navigation overlay */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
       </body>
     </html>
   );
