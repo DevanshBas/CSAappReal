@@ -8,41 +8,44 @@
 /* CSS Custom Properties for theming */
 :root {
   /* Dark theme (default) */
-  --background: #101112;
+  --background: #0A0B0D;
   --card: #1A1C1F;
-  --text-primary: #F5F7FA;
-  --text-secondary: #A0A4AE;
-  --accent-blue: #3A8DFF;
-  --accent-green: #00D38C;
-  --error-red: #FF5C5C;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --accent-blue: #3B82F6;
+  --accent-green: #10B981;
+  --error-red: #EF4444;
   
   /* Additional semantic colors */
-  --border: #2A2D31;
-  --muted: #606770;
-  --shadow: rgba(0, 0, 0, 0.1);
+  --border: #1E293B;
+  --muted: #64748B;
+  --shadow: rgba(0, 0, 0, 0.25);
+  --glass-bg: rgba(15, 23, 42, 0.8);
 }
 
 /* Light theme */
 .light,
 [data-theme="light"] {
-  --background: #FAFAFA;
+  --background: #F8FAFC;
   --card: #FFFFFF;
-  --text-primary: #101112;
-  --text-secondary: #606770;
-  --border: #E5E7EB;
-  --muted: #9CA3AF;
-  --shadow: rgba(0, 0, 0, 0.05);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border: #E2E8F0;
+  --muted: #64748B;
+  --shadow: rgba(15, 23, 42, 0.1);
+  --glass-bg: rgba(248, 250, 252, 0.8);
 }
 
 /* Dark theme explicit */
 [data-theme="dark"] {
-  --background: #101112;
-  --card: #1F1F23;
-  --text-primary: #E2E8F0;
-  --text-secondary: #A0A4AE;
-  --border: #374151;
-  --muted: #6B7280;
-  --shadow: rgba(0, 0, 0, 0.2);
+  --background: #0A0B0D;
+  --card: #1A1C1F;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --border: #1E293B;
+  --muted: #64748B;
+  --shadow: rgba(0, 0, 0, 0.25);
+  --glass-bg: rgba(15, 23, 42, 0.8);
 }
 
 @layer base {
@@ -58,7 +61,8 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
   }
 
   /* Typography scale */
@@ -152,13 +156,25 @@
 }
 
 @layer components {
-  /* Hero section component */
+  /* Hero section component - Enhanced */
   .hero {
-    @apply max-w-4xl mx-auto my-12 py-16 px-6 rounded-2xl text-center flex flex-col items-center;
-    background-color: var(--card);
-    box-shadow: 0 10px 25px var(--shadow);
+    @apply max-w-5xl mx-auto my-16 py-24 px-8 rounded-3xl text-center flex flex-col items-center relative overflow-hidden;
+    background: linear-gradient(135deg, var(--card) 0%, rgba(59, 130, 246, 0.05) 50%, rgba(16, 185, 129, 0.05) 100%);
+    border: 1px solid var(--border);
+    box-shadow: 0 25px 50px var(--shadow);
     line-height: 1.5;
     user-select: none;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    pointer-events: none;
   }
 
   /* Button components */
@@ -239,10 +255,12 @@
     background-clip: text;
   }
 
+  /* Glass effect - Updated for better visual impact */
   .glass-effect {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px) saturate(180%);
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
 
   /* Loading states */
@@ -285,7 +303,8 @@
   /* Focus utilities */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    box-shadow: 0 0 0 2px var(--accent-blue), 0 0 0 4px var(--background); /* Manual focus ring using box-shadow for variable color */
+    /* Use Tailwind's ring color utility with a CSS variable */
+    --tw-ring-color: var(--accent-blue);
   }
 
   /* Animation utilities */
