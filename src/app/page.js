@@ -1,3 +1,4 @@
+// Test change
 import SquadsPage from '../components/civicmix/SquadsPage';
 
 export default function HomePage() {
