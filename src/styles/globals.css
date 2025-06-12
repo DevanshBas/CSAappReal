@@ -285,7 +285,7 @@
   /* Focus utilities */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
-    focus:ring-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px var(--accent-blue), 0 0 0 4px var(--background); /* Manual focus ring using box-shadow for variable color */
   }
 
   /* Animation utilities */
