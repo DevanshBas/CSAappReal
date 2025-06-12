@@ -1,7 +1,7 @@
-import App from '../components/App';
+import SquadsPage from '../components/civicmix/SquadsPage';
 
 export default function HomePage() {
   return (
-    <App />
+    <SquadsPage />
   );
 }
