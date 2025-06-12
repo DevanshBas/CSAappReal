@@ -1,0 +1,9 @@
+{
+  "/_app": "pages/_app.js",
+  "/api/squads": "pages/api/squads.js",
+  "/api/squads/[squadId]": "pages/api/squads/[squadId].js",
+  "/api/squads/[squadId]/join": "pages/api/squads/[squadId]/join.js",
+  "/api/squads/roles": "pages/api/squads/roles.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js"
+}
