@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 
 import CreateSquadModal from './CreateSquadModal';
 
-// Assuming a placeholder for a successful join state or refresh
-
 const SquadsPage = () => {
   const [squads, setSquads] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +11,6 @@ const SquadsPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [squadRoles, setSquadRoles] = useState([]); // State for squad roles
 
-  // Placeholder function to simulate fetching the list of squads
   const fetchSquads = async () => { // Modified to fetch from /api/squads
     setLoading(true);
     setError(null);
@@ -31,9 +28,7 @@ const SquadsPage = () => {
     }
   };
 
-  // Placeholder function to simulate fetching squad roles
-  // Modified to fetch from /api/squads/roles
-  const fetchSquadRoles = async () => {
+  const fetchSquadRoles = async () => { // Modified to fetch from /api/squads/roles
     try {
       const response = await fetch('/api/squads/roles');
       if (!response.ok) {
@@ -45,20 +40,17 @@ const SquadsPage = () => {
     } catch (err) {
       console.error("Error fetching squad roles:", err);
     }
-  }; // Corrected closing brace and parenthesis
+  };
 
-  // Placeholder function to check if a user can perform an action based on role and permissions
   const canPerformAction = (userRole, requiredPermission) => {
     console.log(`Checking if role "${userRole}" has permission "${requiredPermission}"`);
     // In a real application, you would look up the role in `squadRoles`
     // and check its associated permissions.
     // For now, a basic placeholder check:
-    // Placeholder logic - replace with actual permission check
-    return true; 
+    return true;
   };
-  // Placeholder function to simulate joining a squad
-  // Modified to use fetch API to /api/squads/{squadId}/join
-  const handleJoinSquad = async (squadId) => {
+
+  const handleJoinSquad = async (squadId) => { // Modified to use fetch API to /api/squads/{squadId}/join
     console.log(`Attempting to join squad: ${squadId}`);
     try {
       const response = await fetch(`/api/squads/${squadId}/join`, {
@@ -73,6 +65,7 @@ const SquadsPage = () => {
       console.error(`Error joining squad ${squadId}:`, error);
     }
   };
+
   useEffect(() => {
     // Clear selected squad when fetching new list
     setSelectedSquadId(null);
@@ -81,21 +74,23 @@ const SquadsPage = () => {
     fetchSquads();
     fetchSquadRoles(); // Fetch roles on component mount
   }, []); // Fetch squads on component mount
+
   const handleCloseCreateModal = () => {
     setIsCreateModalOpen(false);
     // Optional: Refresh squad list after creation
     // fetchSquads();
   };
+
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Squads</h1>
+    <div className="py-8 px-4 text-primary font-poppins">
+      <h1 className="text-2xl mb-4">Squads</h1>
 
       {/* Conditionally render either the squad list or the squad feed */}
       {!selectedSquadId ? (
-        <>
+        <div className="flex flex-col items-center w-full"> {/* Use a div instead of an empty fragment */}
           {/* Placeholder for Create Squad modal trigger */}
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            className="px-4 py-2 bg-accent text-white rounded-xl transition-transform active:scale-[.98] hover:bg-white hover:bg-opacity-10"
             onClick={() => setIsCreateModalOpen(true)}
           >
             Create Squad
@@ -109,41 +104,39 @@ const SquadsPage = () => {
           {!loading && !error && squads.length === 0 && <p>No squads found.</p>}
 
           {/* Grid of Squads */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {squads.map(squad => (
               <div
                 key={squad.id}
-                className="border rounded-md p-4 flex flex-col items-center cursor-pointer" // Added cursor-pointer
+                className="border rounded-xl p-4 flex flex-col items-center cursor-pointer shadow-sm bg-card"
                 onClick={() => setSelectedSquadId(squad.id)} // Set selected squad on click
               >
                 {/* Add basic styling */}
-            {/* Placeholder for icon */}
-            {squad.iconUrl && <img src={squad.iconUrl} alt={squad.name} className="w-12 h-12 mb-2" />}
-            <h3 className="text-lg font-semibold mb-1">{squad.name}</h3>
-            <p className="text-gray-600 mb-2">{squad.memberCount} Members</p>
-             {/* Placeholders for description and top members */}
-             {squad.description && <p>{squad.description}</p>} {/* Display description if available */}
-              {/* Placeholder for top members */}
-              {/* squad.topMembers && squad.topMembers.length > 0 && (
+                {/* Placeholder for icon */}
+                {squad.iconUrl && <img src={squad.iconUrl} alt={squad.name} className="w-12 h-12 mb-2" />}
+                <h3 className="text-lg font-semibold mb-1">{squad.name}</h3>
+                <p className="text-secondary mb-2">{squad.memberCount} Members</p>
+                {/* Placeholders for description and top members */}
+                {squad.description && <p>{squad.description}</p>} {/* Display description if available */}
+                {/* Placeholder for top members */}
+                {/* squad.topMembers && squad.topMembers.length > 0 && (
                  <p>Top Members: {squad.topMembers.map(member => member.name).join(', ')}</p> )} */}
-             <p>Squad Description Placeholder</p>
-            {/* Join button - onClick handler added */}
-            <button className="px-3 py-1 bg-green-500 text-white rounded-md" onClick={(e) => { e.stopPropagation(); handleJoinSquad(squad.id); }}>
-              {/* Conditional display of join button text based on join policy */}
-              {squad.joinPolicy.type === 'open' && 'Join'}
-              {squad.joinPolicy.type === 'approvalRequired' && 'Request to Join'}
-              {squad.joinPolicy.type === 'inviteOnly' && 'Invite Only'} 
-            </button>
+                {/* Join button - onClick handler added */}
+                <button className="px-3 py-1 bg-accent text-white rounded-xl transition-transform active:scale-[.98] hover:bg-white hover:bg-opacity-10" onClick={(e) => { e.stopPropagation(); handleJoinSquad(squad.id); }}>
+                  {squad.joinPolicy.type === 'open' && 'Join'}
+                  {squad.joinPolicy.type === 'approvalRequired' && 'Request to Join'}
+                  {squad.joinPolicy.type === 'inviteOnly' && 'Invite Only'}
+                </button>
               </div>
             ))}
           </div>
-        </>
+        </div>
       ) : (
         /* Placeholder for Squad Feed when a squad is selected */
         <div className="mt-8">
           <h2>Squad Feed for Squad ID: {selectedSquadId}</h2>
           {/* TODO: Implement Squad Feed component or section */}
-          <button onClick={() => setSelectedSquadId(null)}>Back to Squads List</button> {/* Button to go back */}
+          <button onClick={() => setSelectedSquadId(null)} className="px-4 py-2 bg-accent text-white rounded-xl transition-transform active:scale-[.98] hover:bg-white hover:bg-opacity-10">Back to Squads List</button> {/* Button to go back */}
         </div>
       )}
       <CreateSquadModal
@@ -151,8 +144,6 @@ const SquadsPage = () => {
         onClose={handleCloseCreateModal}
         // Add other props for form handling if needed
       />
-      
-      {/* Create Squad Modal */}
     </div>
   );
 };
