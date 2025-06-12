@@ -1,3 +1,4 @@
+// This is a test comment
 import SquadsPage from '../components/civicmix/SquadsPage';
 
 export default function HomePage() {
