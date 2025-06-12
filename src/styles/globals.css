@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --background: #F9FAFB;
+  --card: #FFFFFF;
+  --text-primary: #1E293B;
+  --accent-blue: #3A8DFF;
+  --accent-green: #00D38C;
+  --error-red: #FF5C5C;
+}
+
+[data-theme="dark"] {
+  --background: #101112;
+  --card: #1F1F23;
+  --text-primary: #E2E8F0;
+}
+
+@layer base {
+  /* Typography settings with Poppins font */
+  html {
+    font-family: 'Poppins', sans-serif;
+  }
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  body {
+    font-size: 16px;
+  }
+  small {
+    font-size: 14px;
+  }
+}
+/* Add any custom components or utilities here */
+
+/* Add any custom components or utilities here */
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-500 to-green-400 text-white rounded-xl px-6 py-3 hover:from-blue-600 hover:to-green-500 active:scale-95 transition;
+  }
+  .btn-secondary {
+    @apply border border-blue-500 text-blue-500 rounded-lg px-4 py-2 hover:bg-blue-50;
+  }
+  .btn-icon {
+    @apply p-2 rounded-full hover:bg-gray-700;
+  }
+}
