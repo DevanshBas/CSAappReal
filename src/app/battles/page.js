@@ -3,8 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
-import BracketArena from '@/components/civicmix/BracketArena'; // Assuming BracketArena is in this path
-import app from '@/lib/firebase'; // Assuming you have a firebase config file here
+import BracketArena from '../../components/civicmix/BracketArena'; // Updated path
+import app from '../../lib/firebase'; // Updated path
 import { useParams } from 'next/navigation';
 
 const db = getFirestore(app);

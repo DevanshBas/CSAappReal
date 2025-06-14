@@ -1,9 +1,10 @@
+// src/app/remix-studio/page.js
 "use client";
 
 import { useState, useEffect } from 'react';
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import RemixStudio from '@/components/civicmix/RemixStudio'; // Assuming RemixStudio is in this path
-import app from '@/lib/firebase'; // Assuming you have a firebase config file here
+import RemixStudio from '../../components/civicmix/RemixStudio'; // Updated path
+import app from '../../lib/firebase'; // Updated path
 import { useAuthState } from 'react-firebase-hooks/auth'; // Assuming you are using react-firebase-hooks for auth
 import { getAuth } from 'firebase/auth';
 

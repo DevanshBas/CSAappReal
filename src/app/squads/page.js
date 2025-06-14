@@ -3,8 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
-import SquadsPage from '@/components/civicmix/SquadsPage'; // Assuming SquadsPage is in this path
-import app from '@/lib/firebase'; // Assuming you have a firebase config file here
+import SquadsPage from '../../components/civicmix/SquadsPage'; // Updated path
+import app from '../../lib/firebase'; // Updated path
 
 const db = getFirestore(app);
 
