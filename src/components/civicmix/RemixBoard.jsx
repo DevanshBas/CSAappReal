@@ -133,10 +133,3 @@ const RemixBoard = ({ remixSchema }) => {
 };
 
 export default RemixBoard;
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default RemixBoard;
